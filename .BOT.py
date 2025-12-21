@@ -1,6 +1,7 @@
 # SYSTEM PACKAGES
 import os
 import logging
+from sqlite3.dbapi2 import Time
 import string
 from datetime import timedelta
 
@@ -157,14 +158,23 @@ async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"PONG   |   {round(client.latency * 1000)}ms")
 
 
-@client.tree.command(name="creator_info", description="Displays Information About The Bot's Creator.")
+@client.tree.command(name="creator_info", description="Displays Information About The Bot's Creator.", guild=discord.Object(id=GUILD_ID_NUM))
 async def creator_info(interaction: discord.Interaction):
     embed = discord.Embed(
-        title="Bot Creator Information",
-        description="This Bot Was Created By [LeafByte Studios](https://leafbyte-studios.github.io/WebSite/index.html).",
-        color=discord.Color.from_rgb(221, 62, 56)
+        title="Creator Information",
+        description="## This Bot Was Created By [LeafByte Studios](https://leafbyte-studios.github.io/WebSite/index.html).",
+        color=discord.Color.from_rgb(221, 62, 56),
     )
-    embed.thumbnail(url="/.Images/LeafByteLogo.png")
+    embed.set_thumbnail(url="https://raw.githubusercontent.com/LeafByte-Studios/Leaf/main/.Images/LOGO_GOOD.png")
+    embed.add_field(name="Website", value="[.LeafByte-Studios.io](https://leafbyte-studios.github.io/WebSite)", inline=False)
+    embed.add_field(name="GitHub", value="[.github.com/LeafByte-Studios](https://github.com/LeafByte-Studios)", inline=False)
+    embed.add_field(name="YouTube", value="[.youtube.com/@LeafByte.Studios](https://www.youtube.com/@LeafByte.Studios)", inline=False)
+    embed.add_field(name="NewGrounds", value="[.leafbyte-studios.newgrounds.com](https://leafbyte-studios.newgrounds.com)", inline=False)
+    embed.add_field(name="Itch.io", value="[.leafbyte-studios.itch.io](https://leafbyte-studios.itch.io)", inline=False)
+    embed.add_field(name="Discord", value="[.discord.gg/LeafByte-Studios](https://discord.gg/pjxvtQ4Y)", inline=False)
+    embed.add_field(name="BlueSky", value="[.leafbyte-studios.bsky.social](https://leafbyte-studios.bsky.social)", inline=False)
+    embed.add_field(name="Email", value="[.contact@leafbyte-studios.com](mailto:leafbyte.studios@gmail.com)", inline=False)
+    embed.set_image(url="https://raw.githubusercontent.com/LeafByte-Studios/Leaf/main/.Images/Banner-TOP.png")
 
     await interaction.response.send_message(embed=embed)
 
