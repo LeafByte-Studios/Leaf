@@ -156,6 +156,18 @@ async def echo(interaction: discord.Interaction, message: str):
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"PONG   |   {round(client.latency * 1000)}ms")
 
+
+@client.tree.command(name="creator_info", description="Displays Information About The Bot's Creator.")
+async def creator_info(interaction: discord.Interaction):
+    embed = discord.Embed(
+        title="Bot Creator Information",
+        description="This Bot Was Created By [LeafByte Studios](https://leafbyte-studios.github.io/WebSite/index.html).",
+        color=discord.Color.from_rgb(221, 62, 56)
+    )
+    embed.thumbnail(url="/.Images/LeafByteLogo.png")
+
+    await interaction.response.send_message(embed=embed)
+
 config_group = app_commands.Group(name="config", description="Configuration Commands")
 
 
@@ -529,7 +541,9 @@ async def unban(
         # User has DMs closed
         pass
 
+
 client.tree.add_command(mod_group, guild=discord.Object(id=GUILD_ID_NUM))
 client.tree.add_command(config_group, guild=discord.Object(id=GUILD_ID_NUM))
+
 
 client.run(TOKEN)
