@@ -175,7 +175,7 @@ class CreatorInfoView(discord.ui.View):
 
         self.add_item(
             discord.ui.Button(
-                label="GitHub Organization",
+                label="Organization",
                 style=discord.ButtonStyle.link,
                 row=2,
                 url="https://github.com/LeafByte-Studios"
