@@ -156,7 +156,11 @@ async def echo(interaction: discord.Interaction, message: str):
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"PONG   |   {round(client.latency * 1000)}ms")
 
-@client.tree.command(name="mod-logs", description="Set Mod Logs Channel.", guild=discord.Object(id=GUILD_ID_NUM))
+config_group = app_commands.Group(name="config", description="Configuration Commands")
+
+
+@config_group.command(name="mod-logs", description="Set Mod Logs Channel.")
+@app_commands.checks.has_permissions(manage_guild=True)
 async def mod_logs(interaction: discord.Interaction, channel: discord.TextChannel):
     channel = channel
     guild = interaction.guild
@@ -204,7 +208,10 @@ async def mod_logs(interaction: discord.Interaction, channel: discord.TextChanne
         await interaction.followup.send("Do You Want To Change?", view=ModLogConfirmView())
 
 
-@client.tree.command(name="timeout", description="Timeout A User.", guild=discord.Object(id=GUILD_ID_NUM))
+mod_group = app_commands.Group(name="mod", description="Moderation Commands")
+
+
+@mod_group.command(name="timeout", description="Timeout A Member.")
 @app_commands.checks.has_permissions(moderate_members=True)
 async def timeout(
     interaction: discord.Interaction,
@@ -264,11 +271,7 @@ async def timeout(
 
 
 # ------------------- KICK COMMAND -------------------
-@client.tree.command(
-    name="kick",
-    description="Kick a user from the server.",
-    guild=discord.Object(id=GUILD_ID_NUM)
-)
+@mod_group.command(name="kick", description="Kick A Member.")
 @app_commands.checks.has_permissions(kick_members=True)
 async def kick(
     interaction: discord.Interaction,
@@ -354,11 +357,7 @@ async def kick_error(interaction: discord.Interaction, error: app_commands.AppCo
 
 
 # ------------------- BAN COMMAND -------------------
-@client.tree.command(
-    name="ban",
-    description="Ban a user from the server.",
-    guild=discord.Object(id=GUILD_ID_NUM)
-)
+@mod_group.command(name="ban", description="Ban A Member.")
 @app_commands.checks.has_permissions(ban_members=True)
 async def ban(
     interaction: discord.Interaction,
@@ -384,7 +383,7 @@ async def ban(
     try:
         await user.send(embed=embed)
     except:
-        print(f"Could not DM {user}")
+        print(f"Could Not DM {user}")
 
     # Then ban
     try:
@@ -442,5 +441,95 @@ async def ban_error(interaction: discord.Interaction, error: app_commands.AppCom
         )
         print(f"Ban Command Error: {error}")
 
+
+@mod_group.command(name="unban", description="Unban a user by ID.")
+@app_commands.checks.has_permissions(ban_members=True)
+async def unban(
+    interaction: discord.Interaction,
+    user_id: str,
+    reason: str = "No Reason Provided."
+):
+    try:
+        user_id = int(user_id)
+    except ValueError:
+        await interaction.response.send_message(
+            "Please Provide A Valid Numeric User ID.",
+            ephemeral=True
+        )
+        return
+
+    await interaction.response.defer(ephemeral=True)
+
+    guild = interaction.guild
+
+    # Find banned user
+    try:
+        ban_entry = await guild.fetch_ban(discord.Object(id=user_id))
+        user = ban_entry.user
+    except discord.NotFound:
+        await interaction.followup.send(
+            "That User Is Not Banned.",
+            ephemeral=True
+        )
+        return
+    except discord.Forbidden:
+        await interaction.followup.send(
+            "I Do Not Have Permission To View Bans.",
+            ephemeral=True
+        )
+        return
+
+    embed = discord.Embed(
+        title="Unban",
+        color=discord.Color.red()
+    )
+    embed.add_field(name="_ _", value="_ _", inline=False)
+    embed.add_field(name="User", value=f"<@{user.id}>", inline=False)
+    embed.add_field(name="Reason", value=reason, inline=False)
+    embed.add_field(name="_ _", value="_ _", inline=False)
+    embed.set_footer(
+        text=interaction.user.name,
+        icon_url=interaction.user.display_avatar.url
+    )
+
+    # Unban
+    try:
+        await guild.unban(user, reason=reason)
+    except discord.Forbidden:
+        await interaction.followup.send(
+            "I Do Not Have Permission To Unban This User.",
+            ephemeral=True
+        )
+        return
+
+    await interaction.followup.send(
+        f"**{user} Has Been Unbanned.**",
+        ephemeral=True
+    )
+    await user.send(embed=embed)
+
+    # Log
+    try:
+        with open(".config.toml", "r", encoding="utf-8") as f:
+            data = toml.load(f)
+
+        channel_id = int(data[str(guild.id)]["mod_log_channel"])
+        mod_log_channel = interaction.client.get_channel(channel_id)
+
+        if mod_log_channel:
+            await mod_log_channel.send(embed=embed)
+
+    except Exception as e:
+        print(f"Failed to log unban: {e}")
+
+    # Send DM to user
+    try:
+        await user.send(embed=embed)
+    except discord.Forbidden:
+        # User has DMs closed
+        pass
+
+client.tree.add_command(mod_group, guild=discord.Object(id=GUILD_ID_NUM))
+client.tree.add_command(config_group, guild=discord.Object(id=GUILD_ID_NUM))
 
 client.run(TOKEN)
