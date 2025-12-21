@@ -162,11 +162,11 @@ async def ping(interaction: discord.Interaction):
 async def creator_info(interaction: discord.Interaction):
     embed = discord.Embed(
         title="Creator Information",
-        description="## This Bot Was Created By [LeafByte Studios](https://leafbyte-studios.github.io/WebSite/index.html).",
-        color=discord.Color.from_rgb(221, 62, 56),
+        description="### This Bot Was Created By [LeafByte Studios](https://leafbyte-studios.github.io/WebSite/index.html).",
+        color=discord.Color.gold(),
     )
     embed.set_thumbnail(url="https://raw.githubusercontent.com/LeafByte-Studios/Leaf/main/.Images/LOGO_GOOD.png")
-    embed.set_image(url="https://github.com/LeafByte-Studios/Leaf/blob/main/.Images/Banner-BG.png?raw=true")
+    embed.set_image(url="https://raw.githubusercontent.com/LeafByte-Studios/Leaf/refs/heads/main/.Images/Banner-BG.png")
 
     await interaction.response.send_message(embed=embed)
 
