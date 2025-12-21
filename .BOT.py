@@ -143,6 +143,110 @@ class ModLogConfirmView(discord.ui.View):
         await interaction.message.delete()
 
 
+# WebSite : https://leafbyte-studios.github.io/WebSite/index.html
+# GitHub : https://github.com/LeafByte-Studios
+# Itch.io : https://leafbyte-studios.itch.io/
+# New Grounds : https://leafbyte-studios.newgrounds.com/
+# YouTube : https://www.youtube.com/@LeafByte.Studios
+# BlueSky : https://bsky.app/profile/leafbyte-studios.bsky.social
+# discord : https://discord.gg/cFKygRS3NE
+
+class CreatorInfoView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+
+        self.add_item(
+            discord.ui.Button(
+                label="GitHub: ",
+                style=discord.ButtonStyle.grey,
+                row=2,
+                disabled=True
+            )
+        )
+
+        self.add_item(
+            discord.ui.Button(
+                label="WebSite (Hosted On Github...)",
+                style=discord.ButtonStyle.link,
+                row=2,
+                url="https://leafbyte-studios.github.io/WebSite/index.html"
+            )
+        )
+
+        self.add_item(
+            discord.ui.Button(
+                label="GitHub Organization",
+                style=discord.ButtonStyle.link,
+                row=2,
+                url="https://github.com/LeafByte-Studios"
+            )
+        )
+
+        self.add_item(
+            discord.ui.Button(
+                label="Social Media: ",
+                style=discord.ButtonStyle.grey,
+                row=3,
+                disabled=True
+            )
+        )
+
+        self.add_item(
+            discord.ui.Button(
+                label="Discord",
+                style=discord.ButtonStyle.link,
+                row=3,
+                url="https://discord.gg/cFKygRS3NE"
+            )
+        )
+
+        self.add_item(
+            discord.ui.Button(
+                label="YouTube",
+                style=discord.ButtonStyle.link,
+                row=3,
+                url="https://www.youtube.com/@LeafByte.Studios"
+            )
+        )
+
+        self.add_item(
+            discord.ui.Button(
+                label="BlueSky",
+                style=discord.ButtonStyle.link,
+                row=3,
+                url="https://bsky.app/profile/leafbyte-studios.bsky.social"
+            )
+        )
+
+        self.add_item(
+            discord.ui.Button(
+                label="Game / Animations: ",
+                style=discord.ButtonStyle.grey,
+                row=4,
+                disabled=True
+            )
+        )
+
+        self.add_item(
+            discord.ui.Button(
+                label="Itch.io",
+                style=discord.ButtonStyle.link,
+                row=4,
+                url="https://leafbyte-studios.itch.io/"
+            )
+        )
+
+        self.add_item(
+            discord.ui.Button(
+                label="New Grounds",
+                style=discord.ButtonStyle.link,
+                row=4,
+                url="https://leafbyte-studios.newgrounds.com/"
+            )
+        )
+
+
+
 intents = discord.Intents.all()
 intents.message_content = True
 
@@ -168,10 +272,11 @@ async def creator_info(interaction: discord.Interaction):
     embed.set_thumbnail(url="https://raw.githubusercontent.com/LeafByte-Studios/Leaf/main/.Images/LOGO_GOOD.png")
     embed.set_image(url="https://raw.githubusercontent.com/LeafByte-Studios/Leaf/refs/heads/main/.Images/Thinner%20Line.png")
 
-    await interaction.response.send_message(embed=embed)
+    await interaction.response.send_message(embed=embed, view=CreatorInfoView())
+
+
 
 config_group = app_commands.Group(name="config", description="Configuration Commands")
-
 
 @config_group.command(name="mod-logs", description="Set Mod Logs Channel.")
 @app_commands.checks.has_permissions(manage_guild=True)
