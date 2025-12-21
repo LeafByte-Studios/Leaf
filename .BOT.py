@@ -166,7 +166,7 @@ async def creator_info(interaction: discord.Interaction):
         color=discord.Color.gold(),
     )
     embed.set_thumbnail(url="https://raw.githubusercontent.com/LeafByte-Studios/Leaf/main/.Images/LOGO_GOOD.png")
-    embed.set_image(url="https://raw.githubusercontent.com/LeafByte-Studios/Leaf/refs/heads/main/.Images/LINE.png")
+    embed.set_image(url="https://raw.githubusercontent.com/LeafByte-Studios/Leaf/refs/heads/main/.Images/Thinner%20Line.png")
 
     await interaction.response.send_message(embed=embed)
 
