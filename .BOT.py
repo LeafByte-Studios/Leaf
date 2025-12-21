@@ -65,7 +65,7 @@ INVITE = os.getenv("INVITE")
 print("-----")
 print("The .env Has Loaded...")
 print("-----")
-print(" TOKEN: MT*****Te2RA")
+print(" TOKEN: MT*****2RA")
 print(f" INVITE: {INVITE}")
 print("-----")
 
@@ -166,15 +166,7 @@ async def creator_info(interaction: discord.Interaction):
         color=discord.Color.from_rgb(221, 62, 56),
     )
     embed.set_thumbnail(url="https://raw.githubusercontent.com/LeafByte-Studios/Leaf/main/.Images/LOGO_GOOD.png")
-    embed.add_field(name="Website", value="[.LeafByte-Studios.io](https://leafbyte-studios.github.io/WebSite)", inline=False)
-    embed.add_field(name="GitHub", value="[.github.com/LeafByte-Studios](https://github.com/LeafByte-Studios)", inline=False)
-    embed.add_field(name="YouTube", value="[.youtube.com/@LeafByte.Studios](https://www.youtube.com/@LeafByte.Studios)", inline=False)
-    embed.add_field(name="NewGrounds", value="[.leafbyte-studios.newgrounds.com](https://leafbyte-studios.newgrounds.com)", inline=False)
-    embed.add_field(name="Itch.io", value="[.leafbyte-studios.itch.io](https://leafbyte-studios.itch.io)", inline=False)
-    embed.add_field(name="Discord", value="[.discord.gg/LeafByte-Studios](https://discord.gg/pjxvtQ4Y)", inline=False)
-    embed.add_field(name="BlueSky", value="[.leafbyte-studios.bsky.social](https://leafbyte-studios.bsky.social)", inline=False)
-    embed.add_field(name="Email", value="[.contact@leafbyte-studios.com](mailto:leafbyte.studios@gmail.com)", inline=False)
-    embed.set_image(url="https://raw.githubusercontent.com/LeafByte-Studios/Leaf/main/.Images/Banner-TOP.png")
+    embed.set_image(url="https://raw.githubusercontent.com/LeafByte-Studios/Leaf/main/.Images/Banner-BG.png")
 
     await interaction.response.send_message(embed=embed)
 
